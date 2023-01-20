@@ -8,11 +8,11 @@ import androidx.lifecycle.ViewModel
 class CalculatorViewModel(
     private val calculator: Calculator = Calculator()
 ): ViewModel() {
-    var uiState by mutableStateOf(CalculatorUiState(calculator.stack.valueList))
+    var uiState by mutableStateOf(CalculatorUiState(calculator.stackValueList))
 
     fun push(value: Int) {
         calculator.push(value)
-        uiState = uiState.copy(stack = calculator.stack.valueList)
+        uiState = uiState.copy(stackValueList = calculator.stackValueList)
     }
 
     fun event(event: CalculatorKeyboardEvent) {

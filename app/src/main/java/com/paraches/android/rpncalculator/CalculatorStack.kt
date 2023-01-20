@@ -47,7 +47,7 @@ fun CalculatorStackScreen(
     LazyColumn(
         modifier = modifier
     ) {
-        items(calculatorViewModel.uiState.stack) {
+        items(calculatorViewModel.uiState.stackValueList) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()

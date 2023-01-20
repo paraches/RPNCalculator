@@ -10,25 +10,23 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.paraches.android.rpncalculator.ui.theme.RPNCalculatorTheme
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 
 data class CalculatorUiState(
-    val stack: List<Int> = listOf()
+    val stackValueList: List<Int> = listOf()
 )
 
-val CalculatorUiState.isKeyActive: Boolean get() = stack.count() > 1
+val CalculatorUiState.isKeyActive: Boolean get() = stackValueList.count() > 1
 
 class Calculator(initialStackList: List<Int> = emptyList()) {
-    private val _stackStateFlow = MutableStateFlow(CalculatorStack(initialStackList)).asStateFlow()
-    val stack = _stackStateFlow.value
+    private val _stack: CalculatorStack = CalculatorStack(initialStackList)
+    val stackValueList = _stack.valueList
 
     fun push(value: Int) {
-        stack.push(value)
+        _stack.push(value)
     }
 
     fun pop(): Int {
-        return stack.pop()
+        return _stack.pop()
     }
 
     // provide operand from stack
