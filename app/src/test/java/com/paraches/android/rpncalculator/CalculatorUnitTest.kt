@@ -1,5 +1,6 @@
 package com.paraches.android.rpncalculator
 
+import androidx.compose.runtime.clearCompositionErrors
 import org.junit.Test
 import org.junit.Assert.*
 
@@ -112,5 +113,23 @@ class CalculatorUnitTest {
         calculator.div()
         val result = calculator.pop()
         assertEquals(3, result)
+    }
+
+    // dup
+    @Test
+    fun dup() {
+        val calculator = Calculator(listOf(1, 2))
+        calculator.dup()
+        val resultList = calculator.stackValueList
+        assertEquals(listOf(1, 1, 2), resultList)
+    }
+
+    // exchange
+    @Test
+    fun exchange() {
+        val calculator = Calculator(listOf(1, 2))
+        calculator.exchange()
+        val resultList = calculator.stackValueList
+        assertEquals(listOf(2, 1), resultList)
     }
 }
