@@ -10,11 +10,6 @@ class CalculatorViewModel(
 ): ViewModel() {
     var uiState by mutableStateOf(CalculatorUiState(calculator.stackValueList))
 
-    fun push(value: Int) {
-        calculator.push(value)
-        uiState = uiState.copy(listValue = calculator.stackValueList)
-    }
-
     fun event(event: KeyboardKey) {
         when (event.keyType) {
             KeyboardKeyType.OnClickCLRKey -> {
