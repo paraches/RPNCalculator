@@ -1,5 +1,6 @@
 package com.paraches.android.rpncalculator
 
+import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
@@ -52,11 +53,17 @@ class CalculatorViewModel(
                 )
             }
             KeyboardKeyType.OnClickDivKey -> {
-                calculator.div()
-                uiState = uiState.copy(
-                    listValue = calculator.stackValueList,
-                    inputNumericText = DefaultInputString
-                )
+                try {
+                    calculator.div()
+                } catch (e: java.lang.ArithmeticException) {
+                    Log.d("teshi", "event: Divide by zero\n$e")
+                }
+                finally {
+                    uiState = uiState.copy(
+                        listValue = calculator.stackValueList,
+                        inputNumericText = DefaultInputString
+                    )
+                }
             }
             KeyboardKeyType.OnClickPopKey -> {
                 val value = (DefaultInputString + calculator.pop()).takeLast(InputStringMaxDigit)
