@@ -1,15 +1,27 @@
 package com.paraches.android.rpncalculator
 
-import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 
 class CalculatorViewModel(
     private val calculator: Calculator = Calculator()
 ): ViewModel() {
     var uiState by mutableStateOf(CalculatorUiState(calculator.stackValueList))
+
+    private val _showSnackbar = MutableLiveData(false)
+    val showSnackbar: LiveData<Boolean>
+        get() = _showSnackbar
+    var snackbarText: String = ""
+
+    fun dismissSnackbar() {
+        _showSnackbar.value = false
+    }
 
     fun event(event: KeyboardKey) {
         when (event.keyType) {
@@ -56,7 +68,10 @@ class CalculatorViewModel(
                 try {
                     calculator.div()
                 } catch (e: java.lang.ArithmeticException) {
-                    Log.d("teshi", "event: Divide by zero\n$e")
+                    viewModelScope.launch {
+                        snackbarText = e.toString()
+                        _showSnackbar.value = true
+                    }
                 }
                 finally {
                     uiState = uiState.copy(

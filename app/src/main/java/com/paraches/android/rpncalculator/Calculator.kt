@@ -1,7 +1,10 @@
 package com.paraches.android.rpncalculator
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.runtime.Composable
+import androidx.compose.material.*
+import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -71,6 +74,62 @@ class Calculator(initialStackList: List<Int> = emptyList()) {
 
 @Composable
 fun CalculatorScreen(
+    calculatorViewModel: CalculatorViewModel = viewModel()
+) {
+    val showSnackbar = calculatorViewModel.showSnackbar.observeAsState().value
+
+    SnackbarContainer(
+        snackbarText = calculatorViewModel.snackbarText,
+        showSnackbar = showSnackbar!!,
+        onDismissSnackbar = { calculatorViewModel.dismissSnackbar() }
+    ) {
+        CalculatorContainerScreen(calculatorViewModel)
+    }
+}
+
+@Composable
+fun SnackbarContainer(
+    snackbarText: String,
+    showSnackbar: Boolean,
+    onDismissSnackbar: () -> Unit,
+    modifier: Modifier = Modifier,
+    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
+    content: @Composable () -> Unit
+) {
+    Box(modifier = modifier) {
+        content()
+
+        val onDismissState by rememberUpdatedState(newValue = onDismissSnackbar)
+        LaunchedEffect(showSnackbar, snackbarText) {
+            if (showSnackbar) {
+                try {
+                    snackbarHostState.showSnackbar(
+                        message = snackbarText,
+                        "OK",
+                        duration = SnackbarDuration.Short
+                    )
+                } finally {
+                    onDismissState()
+                }
+            }
+        }
+
+        MaterialTheme(shapes = Shapes()) {
+            SnackbarHost(
+                hostState = snackbarHostState,
+                modifier = modifier
+                    .align(Alignment.BottomCenter)
+                    .systemBarsPadding()
+                    .padding(8.dp)
+            ) {
+                Snackbar(snackbarData = it)
+            }
+        }
+    }
+}
+
+@Composable
+fun CalculatorContainerScreen(
     calculatorViewModel: CalculatorViewModel = viewModel()
 ) {
     Column(
