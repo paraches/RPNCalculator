@@ -1,6 +1,5 @@
 package com.paraches.android.rpncalculator
 
-import androidx.compose.runtime.clearCompositionErrors
 import org.junit.Test
 import org.junit.Assert.*
 
@@ -113,6 +112,12 @@ class CalculatorUnitTest {
         calculator.div()
         val result = calculator.pop()
         assertEquals(3, result)
+    }
+
+    @Test(expected = java.lang.ArithmeticException::class)
+    fun div_with_divide_by_zero() {
+        val calculator = Calculator(listOf(0, 1))
+        calculator.div()
     }
 
     // dup
