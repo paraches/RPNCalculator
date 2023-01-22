@@ -14,10 +14,10 @@ data class CalculatorUiState(
 )
 
 val CalculatorUiState.isOperatorKeyEnabled: Boolean get() = listValue.count() > 1
-val CalculatorUiState.isStackFunctionKeyEnabled: Boolean get() = listValue.count() > 0
+val CalculatorUiState.isStackFunctionKeyEnabled: Boolean get() = listValue.isNotEmpty()
 
 class Calculator(initialStackList: List<Int> = emptyList()) {
-    private val _stack: CalculatorStack = CalculatorStack(initialStackList)
+    private val _stack: CalculatorStackInterface = CalculatorStack(initialStackList)
     val stackValueList = _stack.valueList
 
     fun push(value: Int) {
