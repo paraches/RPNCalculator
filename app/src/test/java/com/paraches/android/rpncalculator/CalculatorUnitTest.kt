@@ -113,4 +113,28 @@ class CalculatorUnitTest {
         val result = calculator.pop()
         assertEquals(3, result)
     }
+
+    @Test(expected = java.lang.ArithmeticException::class)
+    fun div_with_divide_by_zero() {
+        val calculator = Calculator(listOf(0, 1))
+        calculator.div()
+    }
+
+    // dup
+    @Test
+    fun dup() {
+        val calculator = Calculator(listOf(1, 2))
+        calculator.dup()
+        val resultList = calculator.stackValueList
+        assertEquals(listOf(1, 1, 2), resultList)
+    }
+
+    // exchange
+    @Test
+    fun exchange() {
+        val calculator = Calculator(listOf(1, 2))
+        calculator.exchange()
+        val resultList = calculator.stackValueList
+        assertEquals(listOf(2, 1), resultList)
+    }
 }

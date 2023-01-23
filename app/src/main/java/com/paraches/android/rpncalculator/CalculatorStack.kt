@@ -7,8 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -18,23 +17,33 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.paraches.android.rpncalculator.ui.theme.RPNCalculatorTheme
 
-class CalculatorStack(initialValueList: List<Int> = emptyList()) {
+interface CalculatorStackInterface {
+    val valueList: List<Int>
+
+    fun push(item: Int)
+
+    fun pop(): Int
+
+    fun clear()
+}
+
+class CalculatorStack(initialValueList: List<Int> = emptyList()): CalculatorStackInterface {
     private val _valueList = mutableStateListOf<Int>()
-    val valueList: SnapshotStateList<Int> = _valueList
+    override val valueList: SnapshotStateList<Int> = _valueList
 
     init {
         _valueList.addAll(initialValueList)
     }
 
-    fun push(item: Int) {
+    override fun push(item: Int) {
         valueList.add(0, item)
     }
 
-    fun pop(): Int {
+    override fun pop(): Int {
         return valueList.removeFirst()
     }
 
-    fun clear() {
+    override fun clear() {
         valueList.clear()
     }
 }
@@ -47,7 +56,7 @@ fun CalculatorStackScreen(
     LazyColumn(
         modifier = modifier
     ) {
-        items(calculatorViewModel.uiState.stack) {
+        items(calculatorViewModel.uiState.listValue) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
