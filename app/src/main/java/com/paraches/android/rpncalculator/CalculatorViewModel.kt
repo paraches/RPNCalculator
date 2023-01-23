@@ -102,7 +102,7 @@ class CalculatorViewModel(
             else -> {
                 event.text.let {
                     uiState = uiState.copy(
-                        inputNumericText = (uiState.inputNumericText + it).takeLast(8)
+                        inputNumericText = (uiState.inputNumericText + it).takeLast(InputStringMaxDigit)
                     )
                 }
             }

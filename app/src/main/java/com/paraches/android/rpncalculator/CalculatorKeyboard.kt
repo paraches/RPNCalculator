@@ -41,7 +41,7 @@ val KeyboardKeyTypeStackFunction: Set<KeyboardKeyType> = setOf(
     KeyboardKeyType.OnClickExcKey,
 )
 
-const val DefaultInputString = "0000000"
+const val DefaultInputString = "00000000"
 val InputStringMaxDigit = DefaultInputString.count()
 
 data class KeyboardKey(
